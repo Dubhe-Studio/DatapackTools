@@ -131,9 +131,9 @@ def addblock():
             had_bottom = table.cell(row, 9).value
             if had_side == 'True':
                 side = block_id + '_side'
-                if had_top== 'True':
+                if had_top == 'True':
                     top = block_id + '_top'
-                    if had_bottom== 'True':
+                    if had_bottom == 'True':
                         bottom = block_id + '_bottom'
                     else:
                         bottom = block_id + '_top'
@@ -149,3 +149,44 @@ def addblock():
             imdf = open(imd + f'\\{block_id}.json', 'w', encoding='utf-8')
             imdf.write(block_model)
             imdf.close()
+
+            # 写入函数文件
+            func_dir = pro_dir + f'\\data\\{namespace}\\functions'  # 函数目录
+            if not os.path.isdir(func_dir):
+                os.mkdir(func_dir)
+                os.mkdir(func_dir + f'\\blocks')
+            if not os.path.isdir(func_dir+f'\\blocks\\{block_id}'):
+                os.mkdir(func_dir+f'\\blocks\\{block_id}')
+            # 放置函数模板
+            with open(pro_dir + '\\templates\\block_set_mcfun.txt', 'r', encoding='utf-8') as bsf:
+                set_func_temp = bsf.read()
+            # 玩家操作函数模板
+            with open(pro_dir + '\\templates\\block_playerset_mcfun.txt', 'r', encoding='utf-8') as bpsf:
+                playerset_func_temp = bpsf.read()
+            # 破坏函数模板
+            with open(pro_dir + '\\templates\\block_broken_mcfun.txt', 'r', encoding='utf-8') as bbf:
+                broken_func_temp = bbf.read()
+
+            # 函数拼接
+            set_func = set_func_temp.format(namespace=namespace, id=block_id, cmd=cmd, cmd_prefix=cmd_prefix)
+            playerset_func = playerset_func_temp.format(namespace=namespace, id=block_id)
+            broken_func = broken_func_temp.format(namespace=namespace, id=block_id)
+
+            # 函数写入
+            set_mcf = open(func_dir + f'\\blocks\\{block_id}\\set.mcfunction', 'w', encoding='utf-8')
+            set_mcf.write(set_func)
+            set_mcf.close()
+            playerset_mcf = open(func_dir + f'\\blocks\\{block_id}\\playerset.mcfunction', 'w', encoding='utf-8')
+            playerset_mcf.write(playerset_func)
+            playerset_mcf.close()
+            broken_mcf = open(func_dir + f'\\blocks\\{block_id}\\broken.mcfunction', 'w', encoding='utf-8')
+            broken_mcf.write(broken_func)
+            broken_mcf.close()
+
+            # 写入主函数
+            with open(pro_dir + '\\templates\\block_main_mcfun.txt', 'r', encoding='utf-8') as bmf:
+                main_func_temp = bmf.read()
+            main_func = main_func_temp.format(id=block_id, namespace=namespace)
+            main_mcf = open(func_dir + f'\\blocks\\{block_id}\\main.mcfunction', 'w', encoding='utf-8')
+            main_mcf.write(main_func)
+            main_mcf.close()
