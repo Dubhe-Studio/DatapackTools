@@ -15,16 +15,23 @@ import cv2
 #     return imageio.imread(imgname, pilmode=pilmode).astype(arrtype)
 
 def cv2_base64(image):
-    base64_str = cv2.imencode('.jpg', image)[1].tostring()
+    base64_str = cv2.imencode('.png', image)[1].tostring()
     base64_str = base64.b64encode(base64_str)
     return base64_str
 
 
 def file_base64(file):
     image = cv2.imread(file)
-    img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    img_big = cv2.cvtColor(cv2.resize(img, (110, 128)), cv2.COLOR_BGR2RGB)
-    img_small = cv2.cvtColor(cv2.resize(img, (55, 64)), cv2.COLOR_BGR2RGB)
+    image = cv2.resize(image, (512, 512), interpolation=cv2.INTER_NEAREST)
+    a, b = image.shape[:2]
+    Alpha = np.ones((a, b, 1)) * 255
+    img_bgra = np.c_[image, Alpha]
+    b, g, r, alpha = cv2.split(img_bgra)
+    mask = ((b == 0) * (g == 0) * (r == 0))
+    alpha[mask] = 0
+    img = cv2.merge((b, g, r, alpha))
+    img_big = cv2.resize(img, (128, 128))
+    img_small = cv2.resize(img, (64, 64))
     base64_large = str(cv2_base64(img_big), 'utf-8')
     base64_small = str(cv2_base64(img_small), 'utf-8')
     img_dict = {'smallIcon': base64_small, 'largeIcon': base64_large}
@@ -96,10 +103,15 @@ def blockImage(img_top, img_left, img_right):
     img = np.add(img0, dsr)
 
     # cv2.imshow("final", img1)
-
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_big = cv2.cvtColor(cv2.resize(img, (110, 128)), cv2.COLOR_BGR2RGB)
-    img_small = cv2.cvtColor(cv2.resize(img, (55, 64)), cv2.COLOR_BGR2RGB)
+    a, b = img.shape[:2]
+    Alpha = np.ones((a, b, 1)) * 255
+    img_bgra = np.c_[img, Alpha]
+    b, g, r, alpha = cv2.split(img_bgra)
+    mask = ((b == 0) * (g == 0) * (r == 0))
+    alpha[mask] = 0
+    img = cv2.merge((b, g, r, alpha))
+    img_big = cv2.resize(img, (110, 128))
+    img_small = cv2.resize(img, (55, 64))
     base64_large = str(cv2_base64(img_big), 'utf-8')
     base64_small = str(cv2_base64(img_small), 'utf-8')
     img_dict = {'smallIcon': base64_small, 'largeIcon': base64_large}
