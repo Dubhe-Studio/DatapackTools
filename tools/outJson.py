@@ -13,7 +13,17 @@ add_item_sheet = getConfig('addfile', 'item')
 
 def outJson():
     namespace = getConfig('settings', 'namespace')
-    json_temp = {
+    data = xlrd.open_workbook(add_excel_path)
+    block_table = data.sheet_by_name(add_block_sheet)
+    item_table = data.sheet_by_name(add_item_sheet)
+    block_rows = block_table.nrows
+    item_rows = item_table.nrows
+    out_file = os.path.join(pro_dir, getConfig('outjson', 'file'))
+    out_file_write = open(out_file, 'w', encoding='utf-8')
+    out_file_write.close()
+
+    for i in range(block_rows - 1):
+        block_temp = {
         "name": "",
         "englishName": "",
         "registerName": "",
@@ -25,17 +35,6 @@ def outJson():
         "smallIcon": "",
         "largeIcon": ""
     }
-    data = xlrd.open_workbook(add_excel_path)
-    block_table = data.sheet_by_name(add_block_sheet)
-    item_table = data.sheet_by_name(add_item_sheet)
-    block_rows = block_table.nrows
-    item_rows = item_table.nrows
-    out_file = os.path.join(pro_dir, getConfig('outjson', 'file'))
-    out_file_write = open(out_file, 'w', encoding='utf-8')
-    out_file_write.close()
-
-    for i in range(block_rows - 1):
-        block_temp = json_temp
         block_temp['type'] = 'Block'
         row = i + 1
         block_id = block_table.cell(row, 1).value  # 方块ID
@@ -74,7 +73,18 @@ def outJson():
         out_file_write.close()
 
     for i in range(item_rows - 1):
-        item_temp = json_temp
+        item_temp = {
+        "name": "",
+        "englishName": "",
+        "registerName": "",
+        "CreativeTabName": "",
+        "OredictList": [],
+        "type": "",
+        "maxStackSize": 64,
+        "maxDurability": 1,
+        "smallIcon": "",
+        "largeIcon": ""
+    }
         item_temp['type'] = 'Item'
         row = i + 1
         item_id = item_table.cell(row, 1).value  # 物品ID
