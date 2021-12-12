@@ -64,7 +64,7 @@ def shapeCheck(img):
     return False
 
 
-def blockImage(img_top, img_left, img_right):
+def blockIcon(img_top, img_left, img_right):
     img_top = cv2.imread(img_top)
     img_left = cv2.imread(img_left)
     img_right = cv2.imread(img_right)

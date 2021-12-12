@@ -59,10 +59,10 @@ def outJson():
             top = block_id
         side_texture = os.path.join(block_texture_dir, f"{side}.png")
         top_texture = os.path.join(block_texture_dir, f"{top}.png")
-        smallImage = base64Image.blockImage(top_texture, side_texture, side_texture)['smallImage']
-        largeImage = base64Image.blockImage(top_texture, side_texture, side_texture)['largeImage']
-        block_temp['smallImage'] = smallImage
-        block_temp['largeImage'] = largeImage
+        smallIcon = base64Image.blockIcon(top_texture, side_texture, side_texture)['smallIcon']
+        largeIcon = base64Image.blockIcon(top_texture, side_texture, side_texture)['largeIcon']
+        block_temp['smallIcon'] = smallIcon
+        block_temp['largeIcon'] = largeIcon
         block_temp['name'] = block_trans_zhcn
         block_temp['englishName'] = block_trans_enus
         block_temp['registerName'] = f"{namespace}:{block_id}"
@@ -85,10 +85,10 @@ def outJson():
             item_temp['OredictList'].append(item_table.cell(row, 7).value)
         except:
             item_temp.pop('OredictList')
-        smallImage = base64Image.file_base64(item_texture_dir)['smallImage']
-        largeImage = base64Image.file_base64(item_texture_dir)['largeImage']
-        item_temp['smallImage'] = smallImage
-        item_temp['largeImage'] = largeImage
+        smallIcon = base64Image.file_base64(item_texture_dir)['smallIcon']
+        largeIcon = base64Image.file_base64(item_texture_dir)['largeIcon']
+        item_temp['smallIcon'] = smallIcon
+        item_temp['largeIcon'] = largeIcon
         item_temp['name'] = item_trans_zhcn
         item_temp['englishName'] = item_trans_enus
         item_temp['registerName'] = f"{namespace}:{item_id}"
