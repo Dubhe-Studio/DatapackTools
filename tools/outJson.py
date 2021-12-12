@@ -12,13 +12,13 @@ add_item_sheet = getConfig('addfile', 'item')
 
 
 def outJson():
-    out_json = {}
     namespace = getConfig('settings', 'namespace')
     json_temp = {
         "name": "",
         "englishName": "",
         "registerName": "",
         "CreativeTabName": "",
+        "OredictList": "",
         "type": "",
         "maxStackSize": 64,
         "maxDurability": 1,
@@ -30,7 +30,7 @@ def outJson():
     item_table = data.sheet_by_name(add_item_sheet)
     block_rows = block_table.nrows
     item_rows = item_table.nrows
-    out_file = os.path.join(pro_dir, "neapolitan_item.json")
+    out_file = os.path.join(pro_dir, getConfig('outjson', 'file'))
     out_file_write = open(out_file, 'w', encoding='utf-8')
     out_file_write.close()
 
@@ -44,6 +44,10 @@ def outJson():
         block_texture_dir = os.path.join(pro_dir, "assets", namespace, "textures", "block")  # 方块贴图文件位置
         had_side = block_table.cell(row, 7).value
         had_top = block_table.cell(row, 8).value
+        try:
+            block_temp['OredictList'] = block_table.cell(row, 10).value
+        except:
+            block_temp.pop('OredictList')
         if had_side == 'True':
             side = block_id + '_side'
             if had_top == 'True':
@@ -77,6 +81,10 @@ def outJson():
         item_trans_enus = item_table.cell(row, 2).value  # 物品英文名
         item_trans_zhcn = item_table.cell(row, 3).value  # 物品简体中文名
         item_texture_dir = os.path.join(pro_dir, "assets", namespace, "textures", "item", f"{item_id}.png")  # 物品贴图文件位置
+        try:
+            item_temp['OredictList'] = item_table.cell(row, 7).value
+        except:
+            item_temp.pop('OredictList')
         smallImage = base64Image.file_base64(item_texture_dir)['smallImage']
         largeImage = base64Image.file_base64(item_texture_dir)['largeImage']
         item_temp['smallImage'] = smallImage
