@@ -44,9 +44,9 @@ def outJson():
         block_texture_dir = os.path.join(pro_dir, "assets", namespace, "textures", "block")  # 方块贴图文件位置
         had_side = block_table.cell(row, 7).value
         had_top = block_table.cell(row, 8).value
-        try:
-            block_temp['OredictList'].append(block_table.cell(row, 10).value)
-        except:
+        if block_table.cell(row, 10).value != 'Null':
+            block_temp['OredictList'] = [f"{block_table.cell(row, 10).value}"]
+        else:
             block_temp.pop('OredictList')
         if had_side == 'True':
             side = block_id + '_side'
@@ -81,9 +81,9 @@ def outJson():
         item_trans_enus = item_table.cell(row, 2).value  # 物品英文名
         item_trans_zhcn = item_table.cell(row, 3).value  # 物品简体中文名
         item_texture_dir = os.path.join(pro_dir, "assets", namespace, "textures", "item", f"{item_id}.png")  # 物品贴图文件位置
-        try:
-            item_temp['OredictList'].append(item_table.cell(row, 7).value)
-        except:
+        if item_table.cell(row, 7).value != 'Null':
+            item_temp['OredictList'] = [f"{item_table.cell(row, 7).value}"]
+        else:
             item_temp.pop('OredictList')
         smallIcon = base64Image.file_base64(item_texture_dir)['smallIcon']
         largeIcon = base64Image.file_base64(item_texture_dir)['largeIcon']
