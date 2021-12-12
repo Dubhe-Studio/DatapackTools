@@ -18,7 +18,7 @@ def outJson():
         "englishName": "",
         "registerName": "",
         "CreativeTabName": "",
-        "OredictList": "",
+        "OredictList": [],
         "type": "",
         "maxStackSize": 64,
         "maxDurability": 1,
@@ -45,7 +45,7 @@ def outJson():
         had_side = block_table.cell(row, 7).value
         had_top = block_table.cell(row, 8).value
         try:
-            block_temp['OredictList'] = block_table.cell(row, 10).value
+            block_temp['OredictList'].append(block_table.cell(row, 10).value)
         except:
             block_temp.pop('OredictList')
         if had_side == 'True':
@@ -82,7 +82,7 @@ def outJson():
         item_trans_zhcn = item_table.cell(row, 3).value  # 物品简体中文名
         item_texture_dir = os.path.join(pro_dir, "assets", namespace, "textures", "item", f"{item_id}.png")  # 物品贴图文件位置
         try:
-            item_temp['OredictList'] = item_table.cell(row, 7).value
+            item_temp['OredictList'].append(item_table.cell(row, 7).value)
         except:
             item_temp.pop('OredictList')
         smallImage = base64Image.file_base64(item_texture_dir)['smallImage']
