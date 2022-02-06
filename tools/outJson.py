@@ -72,7 +72,7 @@ def outJson():
         item_trans_zhcn = item_table.cell(row, 3).value  # 物品简体中文名
         item_texture_dir = os.path.join(pro_dir, "assets", namespace, "textures", "item", f"{item_id}.png")  # 物品贴图文件位置
         if item_table.cell(row, 7).value != 'Null':
-            item_temp['OredictList'] = f"[{item_table.cell(row, 7).value}]"
+            item_temp['OredictList'] = f"[datapack:item/{item_table.cell(row, 7).value}]"
         else:
             item_temp.pop('OredictList')
         smallIcon = base64Image.file_base64(item_texture_dir)['smallIcon']
